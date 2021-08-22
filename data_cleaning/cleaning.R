@@ -36,6 +36,8 @@ df <- raw %>%
 write.csv(df, "../data/bike_clean.csv")
 saveRDS(df, file = "../data/bike_clean.rds")
 
+###
+
 info1 <- read.csv("../data/rental_office_info.csv") %>% select(code, latitude:type)
 info2 <- read.csv("../data/rental_office_info2.csv") %>% select(code, latitude:type)
 info_c <- rbind(info1, info2) %>%
@@ -45,3 +47,62 @@ info_c <- rbind(info1, info2) %>%
 write.csv(info_c, "../data/office_info_clean.csv")
 saveRDS(info_c, "../data/office_info_clean.rds")
 
+###
+
+library(readxl)
+
+dec18rent <- read_excel("../data/rental_office_(dec2018_to_may2019).xlsx", sheet = 1)
+dec18retu <- read_excel("../data/rental_office_(dec2018_to_may2019).xlsx", sheet = 2)
+
+dec18rent1 <- dec18rent %>%
+  separate(col = office, into = c("code", "office"), sep = ". ") %>%
+  filter(!is.na(office)) %>%
+  mutate(month = as.character(month),
+         month = gsub("^(.{4})(.{2})$", "\\1_\\2_01", month),
+         month = as.Date(month, format = "%Y_%m_%d"))
+  
+dec18retu1 <- dec18retu %>%
+  separate(col = office, into = c("code", "office"), sep = ". ") %>%
+  filter(!is.na(office)) %>%
+  mutate(month = as.character(month),
+         month = gsub("^(.{4})(.{2})$", "\\1_\\2_01", month),
+         month = as.Date(month, format = "%Y_%m_%d"))
+
+dec18 <- left_join(dec18rent1, dec18retu1, by = c("code", "month")) %>%
+  select(code, month, rentals, returns)
+
+###
+
+jan17raw <- read.csv("../data/rental_office_(jan_to_dec_2017).csv") %>% as_tibble()
+
+jan17 <- jan17raw %>%
+  mutate(code = substr(code, 2, nchar(code) - 1),
+         month = gsub("^'(.{4})(.{2})'$", "\\1_\\2_01", month),
+         month = as.Date(month, format = "%Y_%m_%d")) %>%
+  select(2, 1, 4, 5)
+
+###
+
+jan18raw <- read.csv("../data/rental_office_(jan_to_june_2018).csv") %>% as_tibble()
+
+jan18 <- jan18raw %>%
+  mutate(code = substr(code, 2, nchar(code) - 1),
+         month = gsub("^'(.{4})(.{2})'$", "\\1_\\2_01", month),
+         month = as.Date(month, format = "%Y_%m_%d")) %>%
+  select(2, 1, 4, 5)
+
+###
+
+jul18raw <- read_excel("../data/rental_office_(july_to_nov_2018).xlsx")
+
+jul18 <- jul18raw %>%
+  mutate(month = as.character(month),
+         month = gsub("^(.{4})(.{2})$", "\\1_\\2_01", month),
+         month = as.Date(month, format = "%Y_%m_%d")) %>%
+  select(2, 1, 4, 5)
+
+###
+
+loc_df <- rbind(jan17,jan18, jul18, dec18)
+write.csv(loc_df, "../data/location_jan17_may19_clean.csv")
+saveRDS(loc_df, "../data/location_jan17_may19_clean.rds")
