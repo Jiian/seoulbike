@@ -1,3 +1,8 @@
+df <- read.csv("../data/bike_clean.csv") %>% as_tibble()
+
+df <- readRDS("../data/office_info_clean.rds")
+
+lapply(df, function(x) any(is.na(x)))
 
 tmp <- df %>%
   filter(season != "Winter")

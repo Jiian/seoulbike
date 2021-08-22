@@ -9,6 +9,7 @@
 # because the sum is very near to the official data
 # 2. Snowfall only occurs in Autumn and Winter.
 # 3. Rent_count is zero if and only if open is "No"
+# 4. No missing data
 #####
 
 library(tidyverse)
@@ -32,5 +33,15 @@ df <- raw %>%
          everything()) %>%
   mutate(snowfall = 10 * snowfall, visibility = visibility * 10)
 
-summary(df)
+write.csv(df, "../data/bike_clean.csv")
+saveRDS(df, file = "../data/bike_clean.rds")
+
+info1 <- read.csv("../data/rental_office_info.csv") %>% select(code, latitude:type)
+info2 <- read.csv("../data/rental_office_info2.csv") %>% select(code, latitude:type)
+info_c <- rbind(info1, info2) %>%
+  as_tibble() %>%
+  mutate(install_date = as.Date(install_date, format = "%d/%m/%Y"),
+         LCD = as.integer(LCD), QR = as.integer(QR))
+write.csv(info_c, "../data/office_info_clean.csv")
+saveRDS(info_c, "../data/office_info_clean.rds")
 
