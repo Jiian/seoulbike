@@ -119,12 +119,73 @@ grid.arrange(p9, p10, nrow = 1)
 
 # Rent Count vs Datetime
 
-```{r setup2, include=FALSE}
-bike <- read.csv("../feature_engineering/seoulDate_dateEngin.csv") %>% as_tibble()
+```{r setup2, include=FALSE, cache=TRUE}
+library(itsmr)
+bike <- read.csv("../feature_engineering/seoulDate_dateEngin.csv") %>%
+  as_tibble()
+bike$season <- factor(bike$season, levels = c("Spring", "Summer", "Autumn", "Winter"))
+bike$day_of_week <- factor(bike$day_of_week, levels = 0:6) 
+
 bike2 <- bike %>%
   select(3:24) %>%
-  select(1:5, 16:20)
+  select(1:5, 7, 16:20)
 glimpse(bike2)
+```
 
+```{r, echo=FALSE, cache=TRUE}
+bike2 %>%
+  group_by(season, hour) %>%
+  summarise(med_rent = median(rent_count), .groups = "keep") %>%
+  ggplot() +
+  geom_line(aes(x = hour, y = med_rent, colour = season)) +
+  labs(title = "Median Daily Rentals by Seasons", x = "Hour of the Day",
+       y = "Median Bike Rentals")
+bike2 %>%
+  group_by(day_of_week, hour) %>%
+  summarise(med_rent = median(rent_count), .groups = "keep") %>%
+  ggplot() +
+  geom_line(aes(x = hour, y = med_rent, colour = day_of_week)) +
+  labs(title = "Median Daily Rentals by Day of Week", x = "Hours",
+       y = "Median Bike Rentals")
+bike2 %>%
+  group_by(holiday, hour) %>%
+  summarise(med_rent = median(rent_count), .groups = "keep") %>%
+  ggplot() +
+  geom_line(aes(x = hour, y = med_rent, colour = holiday)) +
+  labs(title = "Median Daily Rentals by Holiday", x = "Hours",
+       y = "Median Bike Rentals")
+```
+
+```{r, echo=FALSE, cache=TRUE}
+bike2 %>%
+  group_by(day_of_month) %>%
+  summarise(Median = median(rent_count),
+            Average = mean(rent_count), .groups = "drop")%>%
+  pivot_longer(cols = c("Median", "Average"),
+               names_to = "type", values_to = "values") %>%
+  ggplot() +
+  geom_line(aes(x = day_of_month, y = values, colour = type)) +
+  labs(title = "Bike Rentals by Day of Month", x = "Day of Month",
+       y = "Aggregated Rental Count")
+
+season_labs <- data.frame(x = seq(20, 365, 90),
+                          y = rep(500, 4),
+                          lab = c("Winter", "Spring", "Summer", "Autumn"))
+
+bike2 %>%
+  group_by(day_of_year) %>%
+  summarise(total_rent = sum(rent_count), .groups = "drop") %>%
+  mutate(smooth_total = smooth.ma(total_rent, q = 10)) %>%
+  ggplot() +
+  geom_line(aes(x = day_of_year, y = smooth_total)) +
+  geom_vline(aes(xintercept = 60)) +
+  geom_vline(aes(xintercept = 152)) +
+  geom_vline(aes(xintercept = 244)) +
+  geom_vline(aes(xintercept = 335)) +
+  geom_text(data = season_labs,
+            mapping = aes(x = x, y = y, label = lab)) +
+  labs(title = "Bike Rentals by Day of Year", x = "Day of Year",
+       y = "Smoothened Total per Day")
+  
 ```
 
