@@ -1,6 +1,117 @@
 ---
 title: "EDA"
 author: "Oh Jian Hui"
-date: "8/23/2021"
-output: html_document
+date: "8/25/2021"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
 ---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(gridExtra)
+bike <- readRDS("../data/bike_clean.rds")
+bike$season <- factor(bike$season, levels = c("Spring", "Summer", "Autumn", "Winter"))
+```
+
+We will first identify the variables in our bike data.
+
+```{r, echo=FALSE, cache=TRUE}
+glimpse(bike)
+```
+
+# Output vs Categorical Features
+We look at the relationship between categorical variables and the output variable.
+
+```{r, echo=FALSE, cache=TRUE}
+p1 <- ggplot(bike) +
+  geom_boxplot(aes(x = season, y = rent_count)) +
+  labs(title = "Rent Count vs Season", x = "Season", y = "Rent Count")
+
+holiday_count <- table(bike$holiday)
+p2 <- ggplot(bike) +
+  geom_boxplot(aes(x = holiday, y = rent_count)) +
+  labs(title = "Rent Count vs Holiday", x = "Holiday", y = "Rent Count") +
+  geom_text(aes(label = paste("n = ", as.character(holiday_count[1])), x = 1.3, y = 1000)) +
+  geom_text(aes(label = paste("n = ", as.character(holiday_count[2])), x = 2.3, y = 1200))
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+Given the large number of observations, the differences in rented bikes count is significant for different seasons and holiday status.
+
+
+# Output vs Continuous Features
+
+The relationship among the continuous variables is as follows.
+
+![variables_correlation.png](./sources/variables_correlation.png)
+![variables_dendrogram.png](./sources/variables_dendrogram.png)
+
+Here we investigate the relationship of the 3 most correlated variable with the output variable.
+
+```{r, echo=FALSE, cache=TRUE}
+ggplot(bike) +
+  geom_point(aes(x = temperature, y = rent_count, colour = season), alpha = 0.5) +
+  labs(title = "Rent Count vs Temperature", x = "Temperature (Celsius)", y = "Rent Count")
+
+ggplot(bike) +
+  geom_point(aes(x = solar_radiation, y = rent_count, colour = season), alpha = 0.5) +
+  labs(title = "Rent Count vs Solar Radiation", x = "Solar Radiation (MJ/m^2)", y = "Rent Count")
+
+ggplot(bike) +
+  geom_point(aes(x = humidity, y = rent_count, colour = season), alpha = 0.5) +
+  labs(title = "Rent Count vs Humidity", x = "Humidity (%)", y = "Rent Count")
+```
+
+# Distribution of Continuous Features
+
+Next, we will investigate the distribution of the continuous variables.
+
+
+```{r, cache=TRUE, echo=FALSE}
+p3 <- ggplot(bike) +
+  geom_histogram(aes(x = snowfall), binwidth = 5) +
+  labs(title = "Distribution of Snowfall", x = "Snowfall (mm)")
+
+p4 <- ggplot(bike) +
+  geom_histogram(aes(x = rainfall), binwidth = 1) +
+  labs(title = "Distribution of Rainfall", x = "Rainfall (mm)")
+
+grid.arrange(p3, p4, nrow = 1)
+```
+
+As seen in the above images, the snowfall and rainfall are significantly dominated by zero (no rain or no snow). The distribution of the data is not erroneous, since Seoul indeed has such weather conditions.
+
+```{r, echo=FALSE, cache=TRUE}
+p5 <- ggplot(bike) +
+  geom_histogram(aes(x = temperature), binwidth = 5) +
+  labs(title = "Distribution of Temperature", x = "Temperature (Celsius)")
+
+p6 <- ggplot(bike) +
+  geom_histogram(aes(x = humidity), binwidth = 5) +
+  labs(title = "Distribution of Humidity", x = "Humidity (%)")
+
+p7 <- ggplot(bike) +
+  geom_histogram(aes(x = wind_speed), binwidth = 0.2) +
+  labs(title = "Distribution of Wind Speed", x = "Wind Speed (m/s)")
+
+p8 <- ggplot(bike) +
+  geom_histogram(aes(x = visibility), binwidth = 1000) +
+  labs(title = "Distribution of Visibility", x = "Visibility (m)")
+
+p9 <- ggplot(bike) +
+  geom_histogram(aes(x = dewpoint_temp), binwidth = 5) +
+  labs(title = "Distribution of Dewpoint Temperature", x = "Dewpoint Temperature (Celsius)")
+
+p10 <- ggplot(bike) +
+  geom_histogram(aes(x = solar_radiation), binwidth = 0.2) +
+  labs(title = "Distribution of Solar Radiation", x = "Solar Radiation (MJ/m^2)")
+
+grid.arrange(p5, p6, nrow = 1)
+grid.arrange(p7, p8, nrow = 1)
+grid.arrange(p9, p10, nrow = 1)
+```
+
+
