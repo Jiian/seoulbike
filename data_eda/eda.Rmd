@@ -120,6 +120,7 @@ grid.arrange(p9, p10, nrow = 1)
 # Rent Count vs Datetime
 
 ```{r setup2, include=FALSE, cache=TRUE}
+rm(list = ls())
 library(itsmr)
 bike <- read.csv("../feature_engineering/seoulDate_dateEngin.csv") %>%
   as_tibble()
@@ -129,6 +130,9 @@ bike$day_of_week <- factor(bike$day_of_week, levels = 0:6)
 bike2 <- bike %>%
   select(3:24) %>%
   select(1:5, 7, 16:20)
+```
+
+```{r, echo=FALSE, cache=TRUE}
 glimpse(bike2)
 ```
 
