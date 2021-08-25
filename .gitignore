@@ -149,7 +149,6 @@ dmypy.json
 
 # RStudio files
 .Rproj.user/
-/*.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -161,7 +160,6 @@ vignettes/*.pdf
 # knitr and R markdown default cache directories
 *_cache/
 /cache/
-*_files/
 
 # Temporary files created by R markdown
 *.utf8.md
@@ -178,4 +176,5 @@ po/*~
 
 # others
 /data_cleaning/jianhui.Rproj
-dask-worker-space/
+/feature_engineering/dask-worker-space/
+/data_eda/eda_files/
