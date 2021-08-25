@@ -21,6 +21,14 @@ We will first identify the variables in our bike data.
 glimpse(bike)
 ```
 
+# Relationship among variables
+
+The relationship among the continuous variables is as follows.
+
+![variables_correlation2.png](./sources/variables_correlation2.png)
+![variables_dendrogram2.png](./sources/variables_dendrogram2.png)
+
+
 # Output vs Categorical Features
 We look at the relationship between categorical variables and the output variable.
 
@@ -43,11 +51,6 @@ Given the large number of observations, the differences in rented bikes count is
 
 
 # Output vs Continuous Features
-
-The relationship among the continuous variables is as follows.
-
-![variables_correlation.png](./sources/variables_correlation.png)
-![variables_dendrogram.png](./sources/variables_dendrogram.png)
 
 Here we investigate the relationship of the 3 most correlated variable with the output variable.
 
@@ -114,4 +117,14 @@ grid.arrange(p7, p8, nrow = 1)
 grid.arrange(p9, p10, nrow = 1)
 ```
 
+# Rent Count vs Datetime
+
+```{r setup2, include=FALSE}
+bike <- read.csv("../feature_engineering/seoulDate_dateEngin.csv") %>% as_tibble()
+bike2 <- bike %>%
+  select(3:24) %>%
+  select(1:5, 16:20)
+glimpse(bike2)
+
+```
 
