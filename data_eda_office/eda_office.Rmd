@@ -50,24 +50,17 @@ ggplot(office_uniq, aes(longitude, latitude)) +
 # 2. (37.57,126.83) -> residential area
 ```
 
-# 3. Time series plot 
+# 3. Time series plot (incomplete)
 ```{r}
 ts_plot <- ggplot(office_unique)
 ```
 
 
-```{r}
-data <- data.frame(
-  day = as.Date("2017-06-14") - 0:364,
-  value = runif(365) + seq(-140, 224)^2 / 10000
-)
-glimpse(data)
-# Most basic bubble plot
-p <- ggplot(data, aes(x=day, y=value)) +
-  geom_line() + 
-  xlab("")
-p
-```
+
+
+
+
+
 
 
 #### Questions
