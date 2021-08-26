@@ -1,0 +1,279 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{floatrow}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\newcommand\course{APPLIED TIME SERIES}	
+\newcommand\yourname{Group A}  
+\pagestyle{fancyplain}
+\headheight 32pt
+\lhead{\yourname\ \vspace{0.1cm} \\ \course}
+\chead{\textbf{\Large Tutorial 1}}
+\rhead{2021/08/24}
+\usepackage{scrextend}
+
+
+\begin{document}
+
+\begin{section}{Recap}
+1. Law of Total Probability
+$$E[X] = E[E(X|Y)]$$
+
+2. Turning Point
+\begin{itemize}
+    \item A point $x\in A$ is a turning point of $f:A\rightarrow B$ is a stationary point if $f'(x) = 0$.
+    \item A stationary point $x$ is a minimum point of $f$ if $f''(x) > 0$.
+\end{itemize}
+
+
+3. Expectation of Positive Functions
+$$\forall x, f(x)>0 \rightarrow E[f(x)] > 0$$
+
+4. Linearity of Expectations
+$$E[aX + bY + c] = a \cdot E[X] + b \cdot E[Y] + c$$
+for random variables $X$ and $Y$.\\
+
+5. Expectation of Product of Independent Random Variables
+$$X\perp Y \rightarrow E[XY] = E[X] \cdot E[Y]$$
+\end{section}
+
+
+\begin{section}{Questions}
+
+1. Let X and Y be two random variables with $E(Y) = \mu$ and $E(Y^2) < \infty$.
+\begin{addmargin}[1em]{2em}% 1em left, 2em right
+
+(a) Show that the constant c that minimises $E(Y - c)^2$ is $c = \mu$.
+\begin{addmargin}[1em]{2em}
+\begin{equation} 
+\begin{split}
+E(Y - c)^2  & = E(Y^2 -2cY + c^2) \\
+            & = E(Y^2) -2cE(Y) + c^2 \\
+            & = E(Y^2) + c^2 -2c\mu \\
+            & = E(Y^2) + h(c),\ where\ h(c) = c^2 -2c\mu
+\end{split}
+\end{equation}
+
+Since $E(Y^2)$ is a constant, the problem reduces to minimising $h(c)$.
+
+\begin{equation} 
+\begin{split}
+h'(c) & = 2c - 2\mu \\
+    0 & = 2c - 2\mu \\
+    c & = \mu
+\end{split}
+\end{equation}
+
+Since $h''(\mu) = 2 > 0$, $c = \mu$ is the minimiser of $h(c)$.
+\end{addmargin}
+
+\hfill \break
+
+(b) Deduce that the random variable $f(X)$ that minimises $E[(Y-f(X))^2|X]$ is $f(X) = E[Y|X]$.
+\begin{addmargin}[1em]{2em}
+\begin{equation}
+\begin{split}
+E[(Y - f(X))^2|X] & = E[(Y^2 - 2Yf(X) + f(X)^2)|X] \\
+                  & = E[Y^2|X] - E[2Yf(X)|X] + E[f(X)^2|X] \\
+                  & = E[Y^2|X] - 2f(X)E[Y|X] + f(X)^2
+\end{split}
+\end{equation}
+
+Setting
+\begin{equation}
+\begin{split}
+\frac{\partial }{\partial f(X)} E[(Y - f(X)^2)|X] = 0 \\
+\frac{\partial }{\partial f(X)} (E[Y^2|X] - 2f(X)E[Y|X] + f(X)^2) & = 0 \\
+-2E(Y|X) + 2(f(X)) & = 0 \\
+2(f(X)) & = 2E(Y|X) \\
+f(X) & = E(Y|X)
+\end{split}
+\end{equation}
+
+$\because \frac{\partial^2 }{\partial f(X)^2} E[(Y - f(X)^2)|X] = 2 > 0$
+
+$\therefore f(X) = E[Y|X]$ is the minimizer.
+
+\end{addmargin}
+\hfill \break
+
+(c) Deduce that the random variable $f(X)$ that minimises $E(Y - f(X))^2$ is also $f(X) = E[Y|X]$.
+\begin{addmargin}[1em]{2em}
+\begin{equation}
+\begin{split}
+& E(Y - f(X))^2 \\
+& = E(Y - E[Y|X] + E[Y|X] - f(X))^2 \\
+& = E((Y - E[Y|X])^2 + 2(Y - E[Y|X])(E[Y|X] - f(X)) + (E[Y|X] - f(X))^2) \\
+& = E(Y - E[Y|X])^2 + 2E[(Y - E[Y|X])(E[Y|X] - f(X))] + E(E[Y|X] - f(X))^2
+\end{split}
+\end{equation}
+
+By employing the law of total expectation, we can simplify the second term as below
+\begin{equation}
+\begin{split}
+& 2E[(Y - E[Y|X])(E[Y|X] - f(X))] \\
+& = 2E[E[(Y - E[Y|X])|X](E[Y|X] - f(X))] \\
+& = 2E[(E(Y|X) - E(Y|X))(E[Y|X] - f(X))] \\
+& = 2E(0) \\
+& = 0
+\end{split}
+\end{equation}
+
+Hence, we can rewrite the equation into
+\begin{equation}
+\begin{split}
+& E(Y - f(X))^2 \\
+& = E(Y - E[Y|X])^2 + E(E[Y|X] - f(X))^2 \\
+& = E(Y^2 - 2Y E[Y|X] + (E[Y|X])^2) + E((E[Y|X])^2 - 2f(X)E[Y|X] + (f(X))^2) \\
+& = E(Y^2) - 2E(Y)E[Y|X] + (E[Y|X])^2 + (E[Y|X])^2 - 2f(X)E[Y|X] + (f(X))^2 \\
+& = E(Y^2) - 2E(Y)E[Y|X] + 2(E[Y|X])^2 - 2f(X)E[Y|X] + (f(X))^2
+\end{split}
+\end{equation}
+
+Setting
+\begin{equation}
+\begin{split}
+\frac{\partial }{\partial f(X)} E(Y - f(X))^2 & = 0 \\
+\frac{\partial }{\partial f(X)} (E(Y^2) + 2E(Y)E[Y|X] + 2(E[Y|X])^2 \\
+- 2f(X)E[Y|X] + f^2(X)) & = 0 \\
+-2E[Y|X] + 2f(X) & = 0 \\
+2f(X) & = 2E[Y|X] \\
+f(X) & = E[Y|X]
+\end{split}
+\end{equation}
+
+We can check that $\frac{\partial^2 }{\partial (f(X))^2} E(Y - f(X))^2 = 2 > 0$ \\
+$\therefore f(X) = E[Y|X]$ is the minimizer for $f(X) = E[Y|X]$.
+\end{addmargin}
+\end{addmargin}
+
+\clearpage
+
+2. Suppose $X_1, X_2, ...$ are random variables with $E(X_t^2) < \infty$ and $E(X_t) = \mu$. The criterion for "best" predictor is to have the minimum mean squared error.
+
+\begin{addmargin}[1em]{2em}% 1em left, 2em right
+
+(a) Show that the random variable $f(X_1, ..., X_n)$ that minimises the conditional mean squared error, $E[(X_{n+1} - f(X_1, ..., X_n))^2|X_1, ..., X_n]$ is $f(X_1,..., X_n) = E[X_{n+1}|X_1, ..., X_n]$.
+\begin{addmargin}[1em]{2em}
+Let $\overrightarrow{X} = (X_1, ..., X_n)$
+
+\begin{equation} 
+\begin{split}
+& E[(X_{n+1} - f(\overrightarrow{X}))^2 | \overrightarrow{X}] \\
+& = E[X_{n+1}^2 + f^2(\overrightarrow{X}) - 2X_{n+1}f(\overrightarrow{X}) | \overrightarrow{X}] \\
+& = E[X_{n+1}^2 | \overrightarrow{X}] + f^2(\overrightarrow{X}) - 2f(\overrightarrow{X}) E[X_{n+1} | \overrightarrow{X}]
+\end{split}
+\end{equation}
+
+Setting
+\begin{equation} 
+\begin{split}
+\frac{\partial }{\partial f(\overrightarrow{X})} E[(X_{n+1} - f(\overrightarrow{X}))^2 | \overrightarrow{X}] &= 0 \\
+2f(\overrightarrow{X}) - 2E[X_{n+1} | \overrightarrow{X}] & = 0 \\
+f(\overrightarrow{X}) & = E[X_{n+1} | \overrightarrow{X}]
+\end{split}
+\end{equation}
+
+$\because \frac{\partial^2 }{\partial f(\overrightarrow{X})^2} E[(X_{n+1} - f(\overrightarrow{X}))^2 | \overrightarrow{X}] = 2 > 0$
+
+$\therefore f(\overrightarrow{X}) = E[X_{n+1} | \overrightarrow{X}]$ is the minimizer.
+\end{addmargin}
+\hfill \break
+
+(b) Deduce that the random variable $f(X_1, . . . , X_n)$ that minimises the unconditional
+mean squared error, $E[(X_{n+1} - f(X_1, ..., X_n))^2]$ is also $f(X_1,..., X_n) = E[X_{n+1}|X_1, ..., X_n]$.
+\begin{addmargin}[1em]{2em}
+
+\end{addmargin}
+\hfill \break
+
+(c) Suppose $X_1, X_2,...$ are iid but $\mu$ is known.
+\begin{addmargin}[1em]{2em}
+(i) What is the best predictor of $X_{n+1}$ in terms of $X_1, ..., X_n$?\\
+\begin{addmargin}[1em]{2em}
+Let $\overrightarrow{X} = (X_1, ..., X_n)$.\\
+\end{addmargin}
+\textbf{Method 1}
+\begin{addmargin}[1em]{2em}
+
+From 2(a), we know that the optimal solution for $E[(X_{n+1} - \hat X_{n+1})^2|\overrightarrow X]$ is $\hat X_{n+1} = E[X_{n+1}|\overrightarrow X]$.\\
+
+Here we know that $E[X_{n+1}|\overrightarrow X]  = E[X_{n+1}]= \mu$, hence a best predictor is $$\hat X_{n+1} = \mu$$ 
+\end{addmargin}
+
+\textbf{Method 2}
+\begin{addmargin}[1em]{2em}
+
+\begin{equation} 
+\begin{split}
+& E[(\hat X_{n+1} - X_{n+1})^2|\overrightarrow X, \mu] \\
+& = E[(\hat X^2_{n+1} + X^2_{n+1} - 2X_{n+1}\hat X_{n+1})|\mu]  \\
+& = E[X^2_{n+1}|\mu] + E[\hat X^2_{n+1}|\mu] - 2 \cdot E[X_{n+1}|\mu] \cdot E[\hat X_{n+1}|\mu] \\
+& = E[X^2_{n+1}|\mu] + E[\hat X^2_{n+1}|\mu] - 2 \cdot \mu \cdot E[\hat X_{n+1}|\mu] \\
+& = E[X^2_{n+1}|\mu] + (\hat X_{n+1} - \mu)^2 - \mu^2 \\
+& = E[X^2_{n+1}|\mu] - \mu^2 + (\hat X_{n+1} - \mu)^2
+\end{split}
+\end{equation}
+
+Line 2: given $\mu, X_{n+1} \perp \overrightarrow X$ \\
+Line 3: by Linearity of E[.] and $\hat X_{n+1} \perp X_{n+1}$\\
+Line 5: Completing the square
+
+\begin{itemize}
+    \item $E[X^2_{n+1}|\mu] - \mu^2$ is constant 
+    \item $(\hat X_{n+1} - \mu)^2 \geq 0$ 
+    \item $(\hat X_{n+1} - \mu)^2 = 0$ when $\hat X_{n+1} = \mu$ 
+    \item Hence, $\hat X_{n+1} = \mu$ is a best predictor for $X_{n+1}$ 
+\end{itemize}
+
+
+\end{addmargin}
+
+
+(ii) If $S_0=0$, $S_n=X_1+...+X_n$, $n=1,2,...$, what is the best predictor of $S_{n+1}$ in terms of $S_1, ..., S_n$?
+
+\begin{addmargin}[1em]{2em}
+Let $\overrightarrow{S} = (S_1, ..., S_n)$
+\begin{equation} 
+\begin{split}
+&E[(\hat S_{n+1} - S_{n+1})^2|\overrightarrow S, \mu] \\
+& = E[\hat S^2_{n+1} - 2S_{n+1}\hat S_{n+1} + S^2_{n+1} | \overrightarrow S, \mu] \\
+& = E[\hat S^2_{n+1}| \overrightarrow S, \mu] + E[S^2_{n+1}| \overrightarrow S, \mu] - 2 \cdot E[S_{n+1}| \overrightarrow S, \mu] \cdot E[\hat S_{n+1}| \overrightarrow S, \mu] \\
+& = E[S^2_{n+1}| \overrightarrow S, \mu] + E[\hat S^2_{n+1}| \overrightarrow S, \mu] - 2 \cdot E[S_n + X_{n+1}| \overrightarrow S, \mu] \cdot E[\hat S_{n+1}| \overrightarrow S, \mu] \\
+& = E[S^2_{n+1}| \overrightarrow S, \mu] + \hat S^2_{n+1} - 2 \cdot (S_n + \mu) \cdot \hat S_{n+1} \\
+& = E[S^2_{n+1}| \overrightarrow S, \mu] - (S_n + \mu)^2 + (\hat S_{n+1} - [S_n + \mu])^2
+\end{split}
+\end{equation}
+
+Line 2: $S_1, ..., S_n, S_{n+1}$ are not IID.\\
+Line 3: $\hat S_{n+1} \perp S_{n+1}$
+
+\begin{itemize}
+    \item $E[S^2_{n+1}| \overrightarrow S, \mu] - (S_n + \mu)^2$ is constant
+    \item $(\hat S_{n+1} - [S_n+\mu])^2 \geq 0$
+    \item $(\hat S_{n+1} - [S_n + \mu])^2 = 0$ when $\hat S_{n+1} = S_n + \mu$
+    \item Hence, $\hat S_{n+1} = S_n + \mu$ is a best predictor for $S_{n+1}$
+\end{itemize}
+
+
+
+\end{addmargin}
+
+\end{addmargin}
+
+
+\end{addmargin}
+\end{section}
+\end{document}
