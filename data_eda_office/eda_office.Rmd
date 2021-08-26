@@ -1,0 +1,82 @@
+---
+title: "eda office"
+author: "ch"
+date: "8/26/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r load in data}
+office <- readRDS("../data/office_info_clean.rds")
+```
+
+# 1. Look at Variables in the Office Data
+```{r look at variables}
+head(office)
+glimpse(office)
+```
+
+## 1.1 Observations made
+Offices with different code, LCD or QR can still be located in the same pair of latitude and longitude. 
+
+There are exact duplicates of each other, hence we need to remove the duplicates.
+```{r Removing duplicates}
+office_uniq <- office %>%
+ # group_by(code, latitude, longitude) %>%
+  arrange(desc(code)) %>% 
+  distinct(code, .keep_all = TRUE)
+
+#arrange by descending code so we can remove code 1686 that has missing latitude and longitude. This is a duplicated row.
+office_uniq
+glimpse(office_uniq)
+View(office_uniq)
+#there are 111 NA rows for latitude and longitude
+```
+
+
+# 2. Check popular places
+world <- map_data("world")
+```{r}
+ggplot(office_uniq, aes(longitude, latitude)) +
+  geom_point()
+# Obvious Seoul map but the offices are at 
+# 1. (37.57, 126.98) -> attraction area
+# 2. (37.57,126.83) -> residential area
+```
+
+# 3. Time series plot 
+```{r}
+ts_plot <- ggplot(office_unique)
+```
+
+
+```{r}
+data <- data.frame(
+  day = as.Date("2017-06-14") - 0:364,
+  value = runif(365) + seq(-140, 224)^2 / 10000
+)
+glimpse(data)
+# Most basic bubble plot
+p <- ggplot(data, aes(x=day, y=value)) +
+  geom_line() + 
+  xlab("")
+p
+```
+
+
+#### Questions
+all duplicates have like same code, latitude and longitude, but code 1686 has missing latitude and longitudes.
+
+```{r}
+filter(office, code == 1686)
+anyDuplicated(office)
+```
+
+
+bike code?
