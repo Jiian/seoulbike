@@ -1,0 +1,105 @@
+---
+title: "PCA Bike"
+author: "ch"
+date: "8/27/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading libraries and come cleaning for PCA
+
+We will need to make non computational factors into computational factors in order to do PCA.
+```{r}
+library(devtools)
+#install_github("vqv/ggbiplot")
+library(ggbiplot)
+library(tidyverse)
+library(ggplot2)
+bike <- readRDS("../data/bike_clean.rds")
+bike2 <- bike %>%
+  mutate(season_no = case_when(
+    .$season == "Winter"~ 4,
+    .$season == "Spring" ~ 1,
+    .$season == "Autumn" ~ 3,
+    .$season == "Summer" ~ 2
+  )) %>%
+  select(-1,-2,-4,-5,-6)
+
+glimpse(bike2)
+```
+# Correlations
+```{r }
+cor(bike2)
+heatmap(cor(bike2))
+```
+We can see that dewpoint_temp, temperature are highly correlated with value 0.913. We can consider dropping either one of the column. Since the most commonly used and widely known attribute is temperature, we will drop the dewpoint_temperature attribute.
+```{r}
+bike3 <- bike2 %>%
+  select(-7)
+bike3
+
+```
+
+
+# 1. PCA
+```{r PCA}
+pca1 <- prcomp(bike3, center=TRUE, scale=TRUE)
+str(pca1)
+summary(pca1)
+# ^ results from pca1 has 11 components, up to PC11. 
+# Each of these explains a percentage of the total variation in the dataset.
+# i.e. PC1 explains 26% of the variance
+```
+
+## 1.1 Choosing no. of PCs
+### 1.1.1 Calculating variance and accumulative variance
+```{r PCA}
+var_explained <- (summary(pca1)[1]$sdev)^2/10
+# 10 is the number of PCAs
+var_explained_r <- round(var_explained,3)
+var_explained_r
+for_cv <- c(0,var_explained_r[1:9])
+for_cv
+cum_var_r <- round(for_cv + var_explained_r,3)
+cum_var_r
+```
+
+### 1.1.2 Plotting
+```{r}
+x <- 1:10
+var_explained_df <- as.data.frame(cbind(x,var_explained_r,cum_var_r))
+cum_var_df <- as.data.frame(cbind(x,cum_var_r))
+
+ggplot(var_explained_df, aes(x, var_explained_r)) +
+  geom_point()+
+  geom_line() +
+  ggtitle("Scree Plot") +
+  ylab("Variance Explained") +
+  xlab("PC number")
+```
+
+```{r}
+library(reticulate)
+py_install("kneed")
+virtualenv_create("r-reticulate")
+```
+
+```{python}
+var_explained_r = (0.255, 0.198, 0.115, 0.098, 0.093, 0.077, 0.062, 0.046, 0.038, 0.018)
+from kneed import KneeLocator
+kl = KneeLocator(range(1, 11), var_explained_r, curve="convex", direction="decreasing")
+kl.elbow
+```
+
+
+
+```{r PCA}
+pca1$rotation
+ggbiplot(pca1)
+```
+
