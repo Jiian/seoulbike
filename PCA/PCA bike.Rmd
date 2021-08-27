@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Loading libraries and come cleaning for PCA
 
-We will need to make non computational factors into computational factors in order to do PCA.
 ```{r}
 library(devtools)
 #install_github("vqv/ggbiplot")
@@ -21,34 +20,31 @@ library(ggbiplot)
 library(tidyverse)
 library(ggplot2)
 bike <- readRDS("../data/bike_clean.rds")
+
+# As PCA is a unsupervised learning algorithm, we will drop the season column
 bike2 <- bike %>%
-  mutate(season_no = case_when(
-    .$season == "Winter"~ 4,
-    .$season == "Spring" ~ 1,
-    .$season == "Autumn" ~ 3,
-    .$season == "Summer" ~ 2
-  )) %>%
-  select(-1,-2,-4,-5,-6)
-
+  select(-1,-2,-4, -5,-6)
 glimpse(bike2)
-```
-# Correlations
-```{r }
-cor(bike2)
-heatmap(cor(bike2))
-```
-We can see that dewpoint_temp, temperature are highly correlated with value 0.913. We can consider dropping either one of the column. Since the most commonly used and widely known attribute is temperature, we will drop the dewpoint_temperature attribute.
-```{r}
-bike3 <- bike2 %>%
-  select(-7)
-bike3
 
 ```
 
+# 1. check if pca is useful
+
+```{r Bartlett's Sphericity Test }
+psych::cortest.bartlett(cor(bike2),n = nrow(bike2))
+```
+p-value from Bartlett's Sphericity Test is 0.0
+
+```{r KMO Test}
+psych::KMO(bike3)
+```
+MSA = 0.5
+
+We obtained a result < 0.05 for Bartlett's test and > 0.5 for KMO's. This means that conducting PCA on our data will not be fruitful.
 
 # 1. PCA
 ```{r PCA}
-pca1 <- prcomp(bike3, center=TRUE, scale=TRUE)
+pca1 <- prcomp(bike2, center=TRUE, scale=TRUE)
 str(pca1)
 summary(pca1)
 # ^ results from pca1 has 11 components, up to PC11. 
@@ -85,18 +81,27 @@ ggplot(var_explained_df, aes(x, var_explained_r)) +
 
 ```{r}
 library(reticulate)
-py_install("kneed")
 virtualenv_create("r-reticulate")
+virtualenv_install("r-reticulate", 
+                   packages = c("numpy",
+                              "panda",
+                              "yellowbrick==1.3",
+                              "factor_analyzer"))
+
+py_install("kneed")
+use_virtualenv("r-reticulate")
+np <- import("numpy")
+pd <- import("panda")
+
 ```
 
 ```{python}
-var_explained_r = (0.255, 0.198, 0.115, 0.098, 0.093, 0.077, 0.062, 0.046, 0.038, 0.018)
+var_explained_r =(0.253, 0.244, 0.115, 0.097, 0.092, 0.077, 0.062, 0.041, 0.019, 0.000)
 from kneed import KneeLocator
 kl = KneeLocator(range(1, 11), var_explained_r, curve="convex", direction="decreasing")
 kl.elbow
 ```
-
-
+We should use 3 PCs. 
 
 ```{r PCA}
 pca1$rotation
