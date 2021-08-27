@@ -1,0 +1,110 @@
+---
+title: "PCA Bike"
+author: "ch"
+date: "8/27/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading libraries and come cleaning for PCA
+
+```{r}
+library(devtools)
+#install_github("vqv/ggbiplot")
+library(ggbiplot)
+library(tidyverse)
+library(ggplot2)
+bike <- readRDS("../data/bike_clean.rds")
+
+# As PCA is a unsupervised learning algorithm, we will drop the season column
+bike2 <- bike %>%
+  select(-1,-2,-4, -5,-6)
+glimpse(bike2)
+
+```
+
+# 1. check if pca is useful
+
+```{r Bartlett's Sphericity Test }
+psych::cortest.bartlett(cor(bike2),n = nrow(bike2))
+```
+p-value from Bartlett's Sphericity Test is 0.0
+
+```{r KMO Test}
+psych::KMO(bike3)
+```
+MSA = 0.5
+
+We obtained a result < 0.05 for Bartlett's test and > 0.5 for KMO's. This means that conducting PCA on our data will not be fruitful.
+
+# 1. PCA
+```{r PCA}
+pca1 <- prcomp(bike2, center=TRUE, scale=TRUE)
+str(pca1)
+summary(pca1)
+# ^ results from pca1 has 11 components, up to PC11. 
+# Each of these explains a percentage of the total variation in the dataset.
+# i.e. PC1 explains 26% of the variance
+```
+
+## 1.1 Choosing no. of PCs
+### 1.1.1 Calculating variance and accumulative variance
+```{r PCA}
+var_explained <- (summary(pca1)[1]$sdev)^2/10
+# 10 is the number of PCAs
+var_explained_r <- round(var_explained,3)
+var_explained_r
+for_cv <- c(0,var_explained_r[1:9])
+for_cv
+cum_var_r <- round(for_cv + var_explained_r,3)
+cum_var_r
+```
+
+### 1.1.2 Plotting
+```{r}
+x <- 1:10
+var_explained_df <- as.data.frame(cbind(x,var_explained_r,cum_var_r))
+cum_var_df <- as.data.frame(cbind(x,cum_var_r))
+
+ggplot(var_explained_df, aes(x, var_explained_r)) +
+  geom_point()+
+  geom_line() +
+  ggtitle("Scree Plot") +
+  ylab("Variance Explained") +
+  xlab("PC number")
+```
+
+```{r}
+library(reticulate)
+virtualenv_create("r-reticulate")
+virtualenv_install("r-reticulate", 
+                   packages = c("numpy",
+                              "panda",
+                              "yellowbrick==1.3",
+                              "factor_analyzer"))
+
+py_install("kneed")
+use_virtualenv("r-reticulate")
+np <- import("numpy")
+pd <- import("panda")
+
+```
+
+```{python}
+var_explained_r =(0.253, 0.244, 0.115, 0.097, 0.092, 0.077, 0.062, 0.041, 0.019, 0.000)
+from kneed import KneeLocator
+kl = KneeLocator(range(1, 11), var_explained_r, curve="convex", direction="decreasing")
+kl.elbow
+```
+We should use 3 PCs. 
+
+```{r PCA}
+pca1$rotation
+ggbiplot(pca1)
+```
+
