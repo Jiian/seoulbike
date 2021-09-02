@@ -75,7 +75,8 @@ df3 <- df1 %>%
 
 ggplot(df3, aes(x = date, y = rep_count, colour = season)) +
   geom_point() +
-  geom_line(mapping = aes(y = smooth.ma(rent_count / 10, q = 5)))
+  geom_line(mapping = aes(y = smooth.ma(rent_count / 10, q = 5))) +
+  geom_hline(mapping = aes(yintercept = 4000))
 
 cor(df3[4:13])
 
