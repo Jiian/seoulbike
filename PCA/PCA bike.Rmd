@@ -21,25 +21,33 @@ bike <- readRDS("../data/bike_clean.rds")
 # 1 Further Cleaninng of Bike Data
 # 1.1 Aggregating bike data
 ```{r}
-bike_aggregated <- bike %>%
-  filter(.$open == "Yes") %>%
+bike <- bike %>%
+  filter(.$open == "Yes")
+
+conti <- bike %>%
   group_by(date) %>%
   summarise(rent_count = sum(rent_count),
-            temperature = mean(temperature),
+            temperature = median(temperature),
             rainfall = sum(rainfall),
             snowfall = sum(snowfall),
-            season = names(which.max(table(bike$season))),
-            holiday = names(which.max(table(bike$holiday))),
-            wind_speed= mean(wind_speed),
-            visibility = mean(visibility),
-            solar_radiation = mean(solar_radiation),
-            dewpoint_temp = mean(dewpoint_temp),
-            humidity = mean(humidity)) %>%
-  mutate(season = as.factor(season),
-         holiday =as.factor(holiday))
+            wind_speed= median(wind_speed),
+            visibility = median(visibility),
+            solar_radiation = median(solar_radiation),
+            dewpoint_temp = median(dewpoint_temp),
+            humidity = median(humidity))
+nrow(conti)
+cate <- bike %>%
+  group_by(date) %>%
+  count(date, season) %>%
+  slice(which.max(n)) %>%
+  select(-3)
+nrow(conti)
 
-glimpse(bike_aggregated)
-head(bike_aggregated)
+bike_agg <- inner_join(conti, cate, by= "date")
+bike_agg
+
+glimpse(bike_agg) %>% 
+head(bike_agg)
 ```
 
 # 1.2 Adding New Column 
@@ -54,7 +62,7 @@ bike_agg_with_season_no <- bike_aggregated%>%
 # As PCA is a unsupervised learning algorithm, we will drop the season column
 nrow(bike_agg_with_season_no)
 write.csv(bike_agg_with_season_no, "bike_agg_with_season_no.csv")
-glimpse(bike_agg_with_season_no)
+saveRDS(bike_agg_with_season_no,"bike_agg_with_season_no.rds")
 ```
 
 
@@ -81,8 +89,8 @@ By separating into different seasons, we aim to explore the important attributes
 
 ```{r}
 #Group Data by Season
-bike_winter <- bike_agg_with_season_no %>%
-  filter(season == "Winter")
+bike_agg <- readRDS("bike_agg_with_season_no.rds")
+bike_winter <- filter(bike_agg_with_season_no, season == "Winter")
 write.csv(bike_winter, "bike_winter.csv")
 
 bike_summer <- bike_agg_with_season_no %>%

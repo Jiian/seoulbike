@@ -1,30 +1,28 @@
 Uploaded bike_agg_with_season_no.csv, aggregated the data and added a column for season no.
 
-1st run with [‘temperature', 'rainfall', 'wind_speed', 'visibility', 'solar_radiation', 'dewpoint_temp', 'humidity']
+1st run with ['temperature', 'rainfall', 'wind_speed', 'visibility', 'solar_radiation', 'dewpoint_temp', 'humidity']
 
 -> p-value: 0.0
--> KMO Test: 0.46871605108438197
--> CBA: 0.8375002484595583
-	0.6916497292299699
+-> KMO Test: 0.5265909108813215
+-> CBA: 0.8796394197418674
+	0.6837862014257663
+	0.3674708109017266
 
 2nd Run: continue 1st run by dropping visibility 
 ->CBA:  0.8375002484595583
-	0.6916497292299699
-
-3rd run : continue 2nd and drop Solar_radiation
--> CBA: 0.9810455389386472
-	0.6916497292299699
+	0.7308365838460058
 
 ----------------------------------------------------------------------------
 
 4th run with [‘temperature', 'rainfall', 'wind_speed', 'visibility', 'solar_radiation'', 'humidity']
 
--> p-value: 8.37345795545041e-155
--> KMO Test:0.41639806462383744
--> CBA: 0.6916497292299699
-	0.709905725000929
+-> p-value: 4.992678540636784e-125
+-> KMO Test:0.44460517206152017
+-> CBA: 0.6837862014257663
+	0.7783817153862087
+	0.3674708109017266
 
 2nd Run: continue 1st run by dropping visibility 
 -> No elbow found, used 2 instead
-->CBA:  0.6916497292299699
-	0.7099057250009291
+->CBA:  0.6837862014257663
+	0.7783817153862087
