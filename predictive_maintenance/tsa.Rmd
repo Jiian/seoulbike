@@ -1,0 +1,89 @@
+---
+title: "Time Series Anlaysis"
+author: "Oh Jian Hui"
+date: "9/3/2021"
+output: html_document
+---
+
+```{r, message=FALSE}
+library(itsmr); library(tidyverse); library(gridExtra)
+df <- readRDS("../data/bike_clean_rep.rds")
+tt <- 1:315
+test_df <- df[316:365, ]
+df <- df[tt, ]
+xx <- df$rep_count
+```
+
+For this analysis, we will assume that the bike repair counts follow a Classical Time Series Decomposition model:
+$$X_t = m_t + s_t + Y_t$$
+where  
+$X_t$ is the bike repair count random variable  
+$m_t$ is the trend component  
+$s_t$ is the seasonal component and  
+$Y_t$ is the random noise with mean zero
+
+# Examine Seasonal Component
+
+```{r}
+p1 <- ggplot(mapping = aes(x = tt, y = xx)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Repair Count vs Day since December 2017",
+       x = "Day since December 2017", y = "Number of Bike Repairs")
+st <- season(xx, 7)
+dt <- xx - st
+p2 <- ggplot(mapping = aes(x = tt, y = dt)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Deseasonalised Repair Count vs Day since December 2017",
+       x = "Day since December 2017", y = "Number of Bike Repairs")
+grid.arrange(p1, p2)
+```
+A 7 days seasonal period is very reasonable considering the bike usage is affected by the customers' weekly schedule.
+
+# Model Trend Component
+
+```{r}
+md <- lm(xx ~ tt + I(tt ^ 2) + I(tt ^ 3) + I(tt ^ 4))
+plot(md, which = 1); summary(md)
+```
+
+The adjusted R squared is 0.7388, indicating that the linear model is able to explain close to three quarters variation in data.
+
+# Model Noise
+
+```{r}
+ACF <- acf(md$residuals)
+cat(ACF$acf[1] / ACF$acf[2], ACF$acf[2] / ACF$acf[3], ACF$acf[3] / ACF$acf[4])
+```
+
+The sample autocorrelations suggest a possible autoregressive model. However, the first few sample autocorrelations suggest it might not be the first order AR.
+
+```{r}
+source("sup_functions.R")
+do_not_use_ <- acf_ci_ar(md$residuals, 0.575)
+```
+
+The above is a 95% confidence interval plot assuming that the data follows first order autoregression model, where red points are the theoretical values.  
+The confidence interval plot provides strong evidence that the first order autoregressive model is not optimal, since there are 4 values with confidence interval not containing the expected value.
+
+```{r}
+minAICC(md$residuals, m = 20, method = "yw")
+```
+
+The suggested autoregressive model (using Yule-Walker Algorithm) is the 10th order AR.
+
+# Estimation
+
+```{r}
+armd <- arima(md$residuals, order = c(10, 0, 0))
+test_yt <- predict(armd, n.ahead = 50)$pred
+test_mt <- predict(md, newdata = data.frame(tt = 316:365))
+test_st <- rep_len(st[(which(st == st[315])[1] + 1):(which(st == st[315])[1] + 7)], length.out = 50)
+
+pred_x <- test_yt + test_mt + test_st
+mse <- mean((test_df$rep_count - pred_x) ^ 2)
+mpae <- 100 * mean(abs((test_df$rep_count - pred_x) / (test_df$rep_count)))
+cat("Mean Squared Error on Test Set: ", mse); cat("Mean Percentage Absolute Error on Test Set: ", mpae)
+```
+
