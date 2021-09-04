@@ -1,0 +1,108 @@
+---
+title: "PCA Bike"
+author: "ch"
+date: "8/27/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading libraries and csv
+
+```{r}
+library(tidyverse)
+bike <- readRDS("../data/bike_clean.rds")
+```
+
+# 1 Further Cleaninng of Bike Data
+# 1.1 Aggregating bike data
+```{r}
+bike <- bike %>%
+  filter(.$open == "Yes")
+
+conti <- bike %>%
+  group_by(date) %>%
+  summarise(rent_count = sum(rent_count),
+            temperature = median(temperature),
+            rainfall = sum(rainfall),
+            snowfall = sum(snowfall),
+            wind_speed= median(wind_speed),
+            visibility = median(visibility),
+            solar_radiation = median(solar_radiation),
+            dewpoint_temp = median(dewpoint_temp),
+            humidity = median(humidity))
+nrow(conti)
+cate <- bike %>%
+  group_by(date) %>%
+  count(date, season) %>%
+  slice(which.max(n)) %>%
+  select(-3)
+nrow(conti)
+
+bike_agg <- inner_join(conti, cate, by= "date")
+bike_agg
+
+glimpse(bike_agg) %>% 
+head(bike_agg)
+```
+
+# 1.2 Adding New Column 
+```{r}
+bike_agg_with_season_no <- bike_aggregated%>%
+  mutate(season_no = case_when(
+  .$season == "Winter" ~ 4,
+  .$season == "Spring" ~ 1,
+  .$season == "Autumn" ~ 3,
+  .$season == "Summer" ~ 2
+))
+# As PCA is a unsupervised learning algorithm, we will drop the season column
+nrow(bike_agg_with_season_no)
+write.csv(bike_agg_with_season_no, "bike_agg_with_season_no.csv")
+saveRDS(bike_agg_with_season_no,"bike_agg_with_season_no.rds")
+```
+
+
+# 2. Further Cleaning of Date Engineering data
+
+```{r}
+library(readr)
+ft_eng <- read_csv("../feature_engineering/seoulDate_dateEngin.csv")
+head(ft_eng)
+
+ft_eng2 <- ft_eng %>%
+  mutate(season_no = case_when(
+  .$season == "Winter" ~ 4,
+  .$season == "Spring" ~ 1,
+  .$season == "Autumn" ~ 3,
+  .$season == "Summer" ~ 2
+))
+nrow(ft_eng2)
+write.csv(ft_eng2, "ft_eng2.csv")
+```
+
+# 3. Separate Aggregated Bike Data into Different Seasons
+By separating into different seasons, we aim to explore the important attributes that will affect the total rentings of of bike everyday in the different seasons. We assumes that different natural factors in different seasons affect bike rental count.
+
+```{r}
+#Group Data by Season
+bike_agg <- readRDS("bike_agg_with_season_no.rds")
+bike_winter <- filter(bike_agg_with_season_no, season == "Winter")
+write.csv(bike_winter, "bike_winter.csv")
+
+bike_summer <- bike_agg_with_season_no %>%
+  filter(season == "Summer")
+write.csv(bike_summer, "bike_summer.csv")
+
+bike_autumn <- bike_agg_with_season_no %>%
+  filter(season == "Autumn")
+write.csv(bike_autumn, "bike_autumn.csv")
+
+bike_spring <- bike_agg_with_season_no %>%
+  filter(season == "Spring")
+write.csv(bike_spring, "bike_spring.csv")
+```
+
