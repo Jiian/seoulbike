@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Seoul Business District</name>
+	<gx:CascadingStyle kml:id="__managed_style_1713AD78521CE193726E">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.66667</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<gx:displayMode>card</gx:displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0BCE3D518C1CE193726E">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1713AD78521CE193726E</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2A860BD4841CE193726E</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_1B087982A71CE18DB3A8">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.66667</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_2A860BD4841CE193726E">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>4</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<gx:displayMode>card</gx:displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_29E97632E21CE18DB3A8">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>4</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_06F161E6771CE18DB3A8">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1B087982A71CE18DB3A8</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_29E97632E21CE18DB3A8</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Placemark id="0E67B15C541CE18DB3A8">
+		<name>Yeoido Business District</name>
+		<LookAt>
+			<longitude>126.9338866734412</longitude>
+			<latitude>37.5277905367357</latitude>
+			<altitude>6.528032229955865</altitude>
+			<heading>28.26722397567479</heading>
+			<tilt>37.43173607755079</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>5719.286988461972</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_06F161E6771CE18DB3A8</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						126.9107559864935,37.53398781527333,7.739714138978373 126.9124881252023,37.52645046138019,8.868795095825522 126.916563808866,37.52105945641572,7.015439754219052 126.9284594645901,37.51633076357803,8.830445925715107 126.9412729697278,37.51860517488315,8.443959660100322 126.9414229500826,37.52223644159869,5.09469650019102 126.9311183399019,37.53045526113524,4.542994507696014 126.9227807468371,37.53335398510442,4.343967252469294 126.9107559864935,37.53398781527333,7.739714138978373 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="08CC259BD71CE196254F">
+		<name>63 Building</name>
+		<gx:mid>/m/06rbgx</gx:mid>
+		<gx:fid>0x357c9f3c1822f59f:0x81e51bac4441f659</gx:fid>
+		<LookAt>
+			<longitude>126.9402103</longitude>
+			<latitude>37.5193776</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>817.2130974867755</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0BCE3D518C1CE193726E</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>126.9402103,37.5193776,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0275E833F91CE19D1D8C">
+		<name>Jung-gu</name>
+		<gx:mid>/m/026rmgd</gx:mid>
+		<gx:fid>0x357ca2fc53a1f59b:0x5f7e54ee689e9e17</gx:fid>
+		<LookAt>
+			<longitude>126.99416535</longitude>
+			<latitude>37.5576747</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>9214.420500292665</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0BCE3D518C1CE193726E</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>126.9979403,37.5640907,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="01FCAB20C41CE1A21D98">
+		<name>Gwanghwamun</name>
+		<gx:mid>/m/02pjss1</gx:mid>
+		<gx:fid>0x357ca37454f683b1:0xfa19c5217c6a0bc0</gx:fid>
+		<LookAt>
+			<longitude>126.9769124</longitude>
+			<latitude>37.5759607</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>816.532579579167</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0BCE3D518C1CE193726E</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>126.9769124,37.5759607,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="07F6E4FE231CE1A56F36">
+		<name>Gangnam-gu</name>
+		<gx:mid>/m/09hxfn</gx:mid>
+		<gx:fid>0x357ca4235fb589fb:0xb331971bc570bb6a</gx:fid>
+		<LookAt>
+			<longitude>127.0679394</longitude>
+			<latitude>37.49684875</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>18443.87414086037</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0BCE3D518C1CE193726E</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>127.0473248,37.5172363,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="075AE855761CE1AAD4D4">
+		<name>Gangnam Business District</name>
+		<LookAt>
+			<longitude>127.0707640096142</longitude>
+			<latitude>37.50664196272348</latitude>
+			<altitude>7.0371621175032</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>17794.88411891274</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_06F161E6771CE18DB3A8</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						127.0183021685292,37.51929967558385,27.95350488157118 127.0344570213027,37.48382114928162,33.19782187616012 127.0420947961952,37.48555193335534,25.89560837996784 127.0424661079115,37.49259081269476,31.41749127478865 127.0694743887355,37.5022985257047,7.290374483406222 127.0659956738727,37.51879370686337,6.623528068676789 127.0552552168095,37.52638058013708,16.71549661188337 127.0465283687528,37.52418410019673,32.07127908571337 127.0456552139033,37.52168404525821,28.99294639862538 127.0447119853,37.51845026609884,25.91461371153739 127.0553416518922,37.50768051722895,19.75794833736142 127.0396845221229,37.50328268229002,40.1707073316109 127.0265512987705,37.52177093510507,37.09397433954171 127.0183021685292,37.51929967558385,27.95350488157118 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="05C90925191CE1B370D6">
+		<name>Jung Business District</name>
+		<LookAt>
+			<longitude>127.0003346644446</longitude>
+			<latitude>37.55547978860031</latitude>
+			<altitude>108.9265444454586</altitude>
+			<heading>9.622581061276078</heading>
+			<tilt>14.73026909650216</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>9071.081217027968</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_06F161E6771CE18DB3A8</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						126.9927934261712,37.56767330025565,26.69381876487449 126.9838904643963,37.56859482722322,28.38483709006614 126.9745570678707,37.56903330761241,31.91227456360396 126.9719256999971,37.56785168152705,34.22420283790214 126.9702848686656,37.56839861802888,35.44046323949037 126.9669698274996,37.56548612954062,40.30929080144885 126.9696676393639,37.56244457074825,31.9403061512318 126.975870619756,37.55612735731865,41.38476340118638 126.9800830044032,37.55581761665366,95.53585193770235 126.9877294543329,37.55861113278537,60.30545394844748 126.99411993924,37.56009856269791,40.07653147160292 127.0044024341197,37.55719217621439,36.73591897860213 127.0064926863462,37.559218159091,36.42737330830882 127.0028290006786,37.5595205976573,35.25928827694845 127.002476527982,37.56999128603446,21.30625661806817 126.9927934261712,37.56767330025565,26.69381876487449 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="0E7067822B1CE1B7A3C3">
+		<name>Jongno Business District</name>
+		<LookAt>
+			<longitude>126.9973081376041</longitude>
+			<latitude>37.5738646877255</latitude>
+			<altitude>29.00317566531577</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>8455.257964662742</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_06F161E6771CE18DB3A8</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						126.9703304891958,37.56836631338096,37.74307074349484 126.9720015125072,37.5678540137673,34.31279036848773 126.9744586924936,37.56911986849026,31.94549185332957 126.9839230870181,37.56862061432873,29.32006993759633 126.9930373828764,37.5677816464956,26.69464802186311 127.0024975850172,37.56996462318338,21.78592252282508 126.9979371025329,37.57286768507898,26.0993809190504 126.9945828913584,37.57153849119423,26.7548988364785 126.9927019310378,37.5730348786665,37.46645246105379 126.9885315468882,37.58346909517323,55.17011377361509 126.9864982446488,37.58709764798279,99.40093282034144 126.9810205452451,37.58831445402213,62.04610887805182 126.981025828915,37.58533277311428,64.36413198531426 126.9771126827499,37.58434835703061,57.42633001951235 126.972040154776,37.58632825224456,61.55326731299381 126.9665186496987,37.58707879921514,74.73479833703433 126.966801794559,37.57667594325113,55.6076607715999 126.95801811729,37.57418945241859,54.00179098654234 126.9671719468255,37.56589834399779,41.0524356565166 126.9703304891958,37.56836631338096,37.74307074349484 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>
