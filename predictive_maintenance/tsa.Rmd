@@ -41,6 +41,7 @@ p2 <- ggplot(mapping = aes(x = tt, y = dt)) +
        x = "Day since December 2017", y = "Number of Bike Repairs")
 grid.arrange(p1, p2)
 ```
+
 A 7 days seasonal period is very reasonable considering the bike usage is affected by the customers' weekly schedule.
 
 # Model Trend Component
@@ -63,11 +64,11 @@ The sample autocorrelations suggest a possible autoregressive model. However, th
 
 ```{r}
 source("sup_functions.R")
-do_not_use_ <- acf_ci_ar(md$residuals, 0.575)
+do_not_use_ <- acf_ci_ar(md$residuals, 0.302)
 ```
 
 The above is a 95% confidence interval plot assuming that the data follows first order autoregression model, where red points are the theoretical values.  
-The confidence interval plot provides strong evidence that the first order autoregressive model is not optimal, since there are 4 values with confidence interval not containing the expected value.
+The confidence interval plot provides strong evidence that the first order autoregressive model is not optimal, since there are 3 values with confidence interval not containing the expected value.
 
 ```{r}
 minAICC(md$residuals, m = 20, method = "yw")
@@ -88,4 +89,3 @@ mse <- mean((test_df$rep_count - pred_x) ^ 2)
 mpae <- 100 * mean(abs((test_df$rep_count - pred_x) / (test_df$rep_count)))
 cat("Mean Squared Error on Test Set: ", mse); cat("Mean Percentage Absolute Error on Test Set: ", mpae)
 ```
-
