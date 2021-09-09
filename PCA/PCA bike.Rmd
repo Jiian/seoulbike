@@ -35,24 +35,31 @@ conti <- bike %>%
             solar_radiation = median(solar_radiation),
             dewpoint_temp = median(dewpoint_temp),
             humidity = median(humidity))
-nrow(conti)
-cate <- bike %>%
+
+mode_season <- bike %>%
   group_by(date) %>%
   count(date, season) %>%
   slice(which.max(n)) %>%
   select(-3)
-nrow(conti)
 
-bike_agg <- inner_join(conti, cate, by= "date")
-bike_agg
+mode_hol <- bike %>%
+  group_by(date) %>%
+  count(date, holiday) %>%
+  slice(which.max(n)) %>%
+  select(-3)
 
-glimpse(bike_agg) %>% 
+bike_agg <- inner_join(conti, mode_season, by= "date") %>%
+  inner_join(mode_hol, by= "date") %>%
+  mutate(season = as.factor(season),
+         holiday = as.factor(holiday))
+
+glimpse(bike_agg) 
 head(bike_agg)
 ```
 
 # 1.2 Adding New Column 
 ```{r}
-bike_agg_with_season_no <- bike_aggregated%>%
+bike_agg_with_season_no <- bike_agg%>%
   mutate(season_no = case_when(
   .$season == "Winter" ~ 4,
   .$season == "Spring" ~ 1,
@@ -66,43 +73,4 @@ saveRDS(bike_agg_with_season_no,"bike_agg_with_season_no.rds")
 ```
 
 
-# 2. Further Cleaning of Date Engineering data
-
-```{r}
-library(readr)
-ft_eng <- read_csv("../feature_engineering/seoulDate_dateEngin.csv")
-head(ft_eng)
-
-ft_eng2 <- ft_eng %>%
-  mutate(season_no = case_when(
-  .$season == "Winter" ~ 4,
-  .$season == "Spring" ~ 1,
-  .$season == "Autumn" ~ 3,
-  .$season == "Summer" ~ 2
-))
-nrow(ft_eng2)
-write.csv(ft_eng2, "ft_eng2.csv")
-```
-
-# 3. Separate Aggregated Bike Data into Different Seasons
-By separating into different seasons, we aim to explore the important attributes that will affect the total rentings of of bike everyday in the different seasons. We assumes that different natural factors in different seasons affect bike rental count.
-
-```{r}
-#Group Data by Season
-bike_agg <- readRDS("bike_agg_with_season_no.rds")
-bike_winter <- filter(bike_agg_with_season_no, season == "Winter")
-write.csv(bike_winter, "bike_winter.csv")
-
-bike_summer <- bike_agg_with_season_no %>%
-  filter(season == "Summer")
-write.csv(bike_summer, "bike_summer.csv")
-
-bike_autumn <- bike_agg_with_season_no %>%
-  filter(season == "Autumn")
-write.csv(bike_autumn, "bike_autumn.csv")
-
-bike_spring <- bike_agg_with_season_no %>%
-  filter(season == "Spring")
-write.csv(bike_spring, "bike_spring.csv")
-```
 
