@@ -1,4 +1,4 @@
-"","rent_count","year","month","day","day_of_week","season","temperature","humudity","holiday","wind_speed","visibility","dewpoint_temp","solar_radiation","rainfall","snowfall"
+"","rent_count","year","month","day","dayofweek","season","temperature","humidity","holiday","wind_speed","visibility","dewpoint_temp","solar_radiation","rainfall","snowfall"
 "1",9539,"2017","12","01","4","Winter",-2.45416666666667,37.5,"No Holiday",1.5375,18707.5,-13.5458333333333,0.24875,0,0
 "2",8523,"2017","12","02","5","Winter",1.325,55.5,"No Holiday",1.7125,14710.8333333333,-5.71666666666667,0.26375,0,0
 "3",7222,"2017","12","03","6","Winter",4.875,84.5,"No Holiday",1.6125,4557.5,1.88333333333333,0.125416666666667,4,0
