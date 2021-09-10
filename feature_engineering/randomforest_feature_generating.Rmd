@@ -1,0 +1,100 @@
+---
+title: "DT2"
+author: "Leo Feng"
+date: "2021/9/1"
+output: html_document
+---
+
+```{r}
+rm(list=ls())
+setwd("C:/Users/86136/Documents/GitHub/seoulbike")
+library(randomForest)
+library(tidyverse)
+
+auto<-read.csv("feature_engineering/seoul_agg_feature_mean.csv")%>%select(-1)
+
+getDT<-function(x){
+  set.seed(10)
+  select<-sample(1:nrow(x),length(x$rent_count)*0.8)
+  train=auto[select,]
+  test=auto[-select,]
+  train.forest<-randomForest(rent_count~.,data=train,importance=TRUE, ntree=100)
+  pred<-predict(train.forest,test)
+  MSE<-mean((test$rent_count-pred)^2)
+  plot(test$rent_count, pred, main = 'DT with all generated features',
+    xlab = 'rent_count', ylab = 'Predict')
+abline(1, 1)
+print(train.forest)
+print(MSE)
+  list(train.forest,train,test)
+}
+
+
+DT<-getDT(auto)
+
+```
+
+```{r}
+#Cross validation
+#perform 5 times with 10 folds
+train<-DT[[2]]
+Train.cv <- replicate(5,rfcv(train[-ncol(train)], train$rent_count, cv.fold = 10, step = 1.5),simplify=FALSE)
+```
+```{r}
+#Table and Plot 
+#No. features VS cross validation errors 
+train.cv <- data.frame(sapply(Train.cv, '[[', "error.cv"))
+train.cv$features <- rownames(train.cv)
+train.cv <- gather(train.cv,key="key",value="value",-features)
+train.cv$features <- as.numeric(as.character(train.cv$features))
+ 
+train.cv.mean <- aggregate(train.cv$value, by = list(train.cv$features), FUN = mean)
+head(train.cv.mean, 15)#lowest x when 4 features
+
+library(ggplot2)
+ 
+ggplot(train.cv.mean, aes(Group.1, x)) +
+geom_line() +
+theme(panel.grid = element_blank(), panel.background = element_rect(color = 'black', fill = 'transparent')) +
+labs(title = '',x = 'Number of Features', y = 'Cross-validation error')
+```
+```{r}
+#Plot of variable importance
+#2 standards: Increasing of MSE and Increasing node purity
+varImpPlot(train.forest, n.var = 10,
+    main = 'Top 10 - variable importance',
+    cex=0.7)
+```
+```{r}
+important_features<-data.frame(importance(train.forest), check.names = FALSE)
+
+features_purity <- important_features[order(important_features$IncNodePurity, decreasing = TRUE), ][c(1:4),]%>%rownames()
+auto2<-auto%>%select(c(rent_count,features_purity))
+set.seed(11)
+select2<-sample(1:nrow(auto2),length(auto2$rent_count)*0.8)
+train2=auto2[select2,]
+test2=auto2[-select2,]
+train.forest2<-randomForest(rent_count~.,data=train2,importance=TRUE, ntree=500)
+train2test2<-predict(train.forest2,test2)
+plot(test2$rent_count, train2test2, main = 'DT with node purity features',
+    xlab = 'rent_count', ylab = 'Predict')
+abline(1, 1)
+train.forest2
+features_purity
+
+
+features_MSE <- important_features[order(important_features$"%IncMSE", decreasing = TRUE), ][c(1:4),]%>%rownames()
+auto3<-auto%>%select(c(rent_count,features_MSE))
+set.seed(12)
+select3<-sample(1:nrow(auto3),length(auto3$rent_count)*0.8)
+train3=auto2[select3,]
+test3=auto2[-select3,]
+train.forest3<-randomForest(rent_count~.,data=train3,importance=TRUE, ntree=500)
+train2test3<-predict(train.forest3,test3)
+plot(test3$rent_count, train2test3, main = 'DT with increasing MSE features',
+    xlab = 'rent_count', ylab = 'Predict')
+abline(1, 1)
+train.forest3
+features_MSE
+```
+
