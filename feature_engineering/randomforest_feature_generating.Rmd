@@ -10,12 +10,12 @@ library(randomForest)
 library(tidyverse)
 
 ### ALL URLs need to be updated ###
-### link to seoul_bike_agg_mean_FG_New.csv : https://github.com/Jiian/seoulbike/blob/main/feature_engineering/seoul_bike_agg_mean_FG_New.csv  ###
+### link to seoul_bike_agg_mean_FG_new.csv : https://github.com/Jiian/seoulbike/blob/main/feature_engineering/seoul_bike_agg_mean_FG_new.csv  ###
 ### link to 7days_demo_FG.csv : https://github.com/Jiian/seoulbike/blob/main/data/7days_demo_FG.csv  ###
 
-auto_URL = 'https://raw.githubusercontent.com/Jiian/seoulbike/main/feature_engineering/seoul_bike_agg_mean_FG_New.csv?token=AVLOXCIPP7GV5E5GR6IZ5M3BHMX3G'
+auto_URL = 'https://raw.githubusercontent.com/Jiian/seoulbike/main/feature_engineering/seoul_bike_agg_mean_FG_new.csv?token=AVLOXCIPP7GV5E5GR6IZ5M3BHMX3G'
 
-#auto<-read.csv("seoulbike/feature_engineering/seoul_bike_agg_mean_FG_New.csv")
+#auto<-read.csv("seoulbike/feature_engineering/seoul_bike_agg_mean_FG_new.csv")
 
 demo_URL = 'https://raw.githubusercontent.com/Jiian/seoulbike/main/data/7days_demo_FG.csv?token=AVLOXCLERTILKVGOFV4JX2LBHMX4E'
 
