@@ -87,7 +87,12 @@ df3 <- df1 %>%
 ggplot(df3, aes(x = date, y = rep_count, colour = season)) +
   geom_point() +
   geom_line(mapping = aes(y = smooth.ma(rent_count / 10, q = 5))) +
-  geom_hline(mapping = aes(yintercept = 4000))
+  geom_hline(mapping = aes(yintercept = 3500)) +
+  labs(title = "Simulated Repair Count against Date",
+       x = "Date", y = "Repair Count") +
+  scale_y_continuous("Repair Count", sec.axis = sec_axis(~ . * 10, name = "Rent Count")) +
+  annotate(geom = "text", x = as.Date("2018-10-1"), y = 3600, label = "Total Number of Bikes") +
+  annotate(geom = "text", x = as.Date("2018-11-1"), y = 2700, label = "Rent Count")
 
 cor(df3[4:13])
 
